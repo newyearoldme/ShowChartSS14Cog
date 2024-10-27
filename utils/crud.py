@@ -1,8 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from .models import AdminLog
+import os
+from dotenv import load_dotenv
 
-DATABASE_PATH = 'sqlite:///C:/Users/curseddd/space-station-14/bin/Content.Server/data/preferences.db'
+load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
+
+DATABASE_PATH = os.getenv("DATABASE_PATH")
+
 engine = create_engine(DATABASE_PATH)
 Session = sessionmaker(bind=engine)
 

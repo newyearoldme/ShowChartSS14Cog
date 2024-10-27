@@ -35,9 +35,6 @@ try:
     log_level: str = config.get('general', 'log_level')
     presence: str = config.get('general', 'presence')
 
-    # Getting the variables from `[secret]`
-    discord_token: str = config.get('secret', 'discord_token')
-
 
 except Exception as err:
     log.critical("Error getting variables from the config file. Error: " + str(err))

@@ -2,9 +2,6 @@ import discord
 from discord.ext import commands
 import matplotlib.pyplot as plt
 import io
-# from sqlalchemy import create_engine
-# from sqlalchemy.orm import sessionmaker
-# from utils.models import AdminLog
 from utils.crud import get_user_messages
 
 class Chart(commands.Cog):
