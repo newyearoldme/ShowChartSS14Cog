@@ -4,13 +4,9 @@ import matplotlib.pyplot as plt
 import io
 from utils.crud import get_user_messages
 
-class Chart(commands.Cog):
+class ChartCog(commands.Cog):
     def __init__(self, client):
         self.client = client
-
-    @commands.Cog.listener()
-    async def on_ready(self):
-        print("Cog: chart.py загружен")
 
     @commands.slash_command(
         description="Отправляет в чат график сообщений, которые Вы писали в игровой чат"
@@ -52,6 +48,7 @@ class Chart(commands.Cog):
         await ctx.send(file=discord.File(buffer, 'message_chart.png'))
         buffer.close()
 
+    # Обработка ошибок
     @commands.Cog.listener()
     async def on_application_command_error(self, ctx: discord.ApplicationContext, error):
         if isinstance(error, commands.CommandOnCooldown):
@@ -60,4 +57,4 @@ class Chart(commands.Cog):
             raise error
 
 def setup(client):
-    client.add_cog(Chart(client))
+    client.add_cog(ChartCog(client))

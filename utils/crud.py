@@ -1,21 +1,43 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
+
 from .models import AdminLog
-import os
-from dotenv import load_dotenv
+from .db_alchemy import get_db
 
-load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
+# CREATE
+def create_log(log_data):
+    db = next(get_db())
+    new_log = AdminLog(**log_data)
+    db.add(new_log)
+    db.commit()
+    db.refresh(new_log)
+    return new_log
 
-DATABASE_PATH = os.getenv("DATABASE_PATH")
-
-engine = create_engine(DATABASE_PATH)
-Session = sessionmaker(bind=engine)
-
+# READ
 def get_user_messages():
-    session = Session()
-    result = session.query(AdminLog).filter(
+    db = next(get_db())
+    result = db.query(AdminLog).filter(
         AdminLog.type == 61,
-        (AdminLog.message.like('%say from%') | AdminLog.message.like('%whisper%'))
+        (AdminLog.message.like('%say from%') | AdminLog.message.like('%whisper from%'))
     ).all()
-    session.close()
+    if not result:
+        return None
     return result
+
+# UPDATE
+def update_log(log_id, updated_data):
+    db = next(get_db())
+    log_entry = db.query(AdminLog).get(log_id)
+    if log_entry:
+        for key, value in updated_data.items():
+            setattr(log_entry, key, value)
+        db.commit()
+        db.refresh(log_entry)
+    return log_entry
+
+# DELETE
+def delete_log(log_id):
+    db = next(get_db())
+    log_entry = db.query(AdminLog).get(log_id)
+    if log_entry:
+        db.delete(log_entry)
+        db.commit()
