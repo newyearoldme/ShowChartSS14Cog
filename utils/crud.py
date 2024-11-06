@@ -1,10 +1,9 @@
-from sqlalchemy.orm import Session
-
 from .models import AdminLog
-from .db_alchemy import get_db
+from utils.db_alchemy import get_db
+
 
 # CREATE
-def create_log(log_data):
+def create_log(log_data: dict) -> AdminLog:
     db = next(get_db())
     new_log = AdminLog(**log_data)
     db.add(new_log)
@@ -13,7 +12,7 @@ def create_log(log_data):
     return new_log
 
 # READ
-def get_user_messages():
+def get_user_messages() -> list[AdminLog] | None:
     db = next(get_db())
     result = db.query(AdminLog).filter(
         AdminLog.type == 61,
@@ -24,7 +23,7 @@ def get_user_messages():
     return result
 
 # UPDATE
-def update_log(log_id, updated_data):
+def update_log(log_id: int, updated_data: dict) -> AdminLog | None:
     db = next(get_db())
     log_entry = db.query(AdminLog).get(log_id)
     if log_entry:
@@ -35,7 +34,7 @@ def update_log(log_id, updated_data):
     return log_entry
 
 # DELETE
-def delete_log(log_id):
+def delete_log(log_id: int) -> None:
     db = next(get_db())
     log_entry = db.query(AdminLog).get(log_id)
     if log_entry:

@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import Integer, String
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
 class Base(DeclarativeBase):
@@ -7,8 +7,9 @@ class Base(DeclarativeBase):
 
 
 class AdminLog(Base):
-    __tablename__ = 'admin_log'
-    admin_log_id = Column(Integer, primary_key=True)
-    type = Column(Integer)
-    message = Column(String)
-    date = Column(String)
+    __tablename__ = "admin_log"
+    
+    admin_log_id: Mapped[int] = mapped_column(Integer, nullable=False, primary_key=True)
+    type: Mapped[int] = mapped_column(Integer)
+    message: Mapped[str] = mapped_column(String)
+    date: Mapped[str] = mapped_column(String)

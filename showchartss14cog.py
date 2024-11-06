@@ -2,7 +2,14 @@ import discord
 from discord.ext import commands
 import matplotlib.pyplot as plt
 import io
-from utils.crud import get_user_messages
+
+if "cogs" in __name__:
+    from .utils import crud
+    from .utils import models
+else:
+    from utils import crud
+    from utils import models
+
 
 class ChartCog(commands.Cog):
     def __init__(self, client):
@@ -15,7 +22,7 @@ class ChartCog(commands.Cog):
     async def show_chart(self, ctx):
         await ctx.respond("*Отправка графика...*")
 
-        result = get_user_messages()
+        result = crud.get_user_messages()
 
         # Обработка данных
         hour_message_count = {}
