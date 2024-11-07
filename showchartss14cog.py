@@ -20,7 +20,7 @@ class ChartCog(commands.Cog):
     )
     @commands.cooldown(1, 60, commands.BucketType.user)
     async def show_chart(self, ctx):
-        await ctx.respond("*Отправка графика...*")
+        await ctx.respond("*Отправка графика...*", ephemeral=True)
 
         result = crud.get_user_messages()
 
